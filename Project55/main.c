@@ -2,10 +2,11 @@
 #include<stdlib.h>
 
 typedef struct TreeNode {
-    double data;
+    double data; 
     struct TreeNode* left, * right;
 } TreeNode;
 
+// 2+3+4*5-6/7+9
 TreeNode n1 = { 4.00, NULL, NULL };
 TreeNode n2 = { 5.00, NULL, NULL };
 TreeNode n3 = { '*', &n1, &n2 };
@@ -48,11 +49,28 @@ double evaluate(TreeNode* root) {
     return 0;
 }
 
+//이진 트리의 노드 수를 반복적 방법으로 계산하고 출력.
 int get_node_count(TreeNode* root) {
-    int count;
-    if (root == NULL) 
+    if (root == NULL)
         return 0;
-    return 1 + get_node_count(root->left) + get_node_count(root->right);
+
+    int count = 0;
+    TreeNode* stack[100]; 
+    int top = -1; 
+
+    stack[++top] = root; 
+
+    while (top >= 0) {
+        TreeNode* current = stack[top--]; 
+        count++;
+
+        if (current->right)
+            stack[++top] = current->right;
+        if (current->left)
+            stack[++top] = current->left; 
+    }
+
+    return count;
 }
 
 int main(void) {
